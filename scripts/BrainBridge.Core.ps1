@@ -12,7 +12,7 @@ function Assert-BrainBridgeConfig($Client, $Tunnel, $Url) {
   if (-not [IO.Path]::IsPathRooted($Client) -or $Client.StartsWith('\\') -or
       [IO.Path]::GetFileName($Client) -ne 'tunnel-client.exe' -or
       -not (Test-Path -LiteralPath $Client -PathType Leaf)) { throw 'Select a local tunnel-client.exe using its full path.' }
-  $item = Get-Item -LiteralPath $Client
+  $item = Get-Item -LiteralPath $Client -Force
   if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Executable links are not supported.' }
   return $uri
 }
@@ -23,7 +23,7 @@ function Assert-BrainBridgeRoot([string]$Root) {
   $walk = $full
   while ($walk) {
     if (Test-Path -LiteralPath $walk) {
-      if ((Get-Item -LiteralPath $walk).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Installation directory cannot contain links or junctions.' }
+      if ((Get-Item -LiteralPath $walk -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Installation directory cannot contain links or junctions.' }
     }
     $walk = Split-Path -Parent $walk
   }

@@ -44,6 +44,8 @@ public class MockTunnel {
     Reject { Assert-BrainBridgeConfig $client $tunnel $bad }
   }
   Reject { Assert-BrainBridgeRoot $sandbox }
+  [IO.File]::SetAttributes($sandbox,([IO.File]::GetAttributes($sandbox) -bor [IO.FileAttributes]::Hidden))
+  Assert ((Assert-BrainBridgeRoot $root) -eq $root) 'Hidden parent directory rejected.'
   Assert ((Test-BrainBridgeConnection $c $runtime $token) -like '*passed*') 'Connection fixture failed.'
   foreach ($bad in @('unauthorized','forbidden','redirect','invalid')) {
     [IO.File]::WriteAllText($mode,$bad)
