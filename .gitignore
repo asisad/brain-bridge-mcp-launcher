@@ -12,6 +12,7 @@ runtime-key.*
 obsidian-token.*
 *.lnk
 *.vbs
+!Setup-BrainBridge.vbs
 .vscode/
 .idea/
 __pycache__/

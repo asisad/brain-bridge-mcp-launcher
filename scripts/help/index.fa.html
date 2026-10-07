@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>راهنمای تصویری Brain Bridge</title>
+<style>
+body{margin:0;background:#f2f5f8;color:#203747;font:17px/1.95 Tahoma,'Segoe UI',sans-serif}main{max-width:1000px;margin:auto;padding:35px 24px 70px}h1{font-size:32px;margin:0}h2{font-size:23px;color:#173c57}p{margin:12px 0}section{background:white;border:1px solid #dde5eb;border-radius:15px;padding:20px 26px;margin:22px 0}a{color:#086591;text-underline-offset:4px}.button{display:inline-block;background:#165977;color:white;text-decoration:none;border-radius:8px;padding:8px 18px;margin:5px 0}code,bdi{direction:ltr;unicode-bidi:isolate}code{background:#eaf0f5;padding:3px 6px;border-radius:5px;font-size:14px}figure{margin:22px 0}img{width:100%;height:auto;border:1px solid #d8e0e6;border-radius:8px}figcaption,.muted{font-size:14px;color:#506777}.note{border-right:4px solid #b98c2c;background:#fff8e8;padding:12px 16px}.step{color:#086591;font-weight:bold}nav a{display:inline-block;margin:5px 0 5px 20px}li{margin:9px 0}.flow{padding:15px;background:#edf4f7;border-radius:8px}footer{font-size:13px;color:#506777} @media(max-width:600px){main{padding:20px 12px}section{padding:15px}h1{font-size:25px}}
+</style></head>
+<body><main>
+<nav><strong>فارسی</strong> · <a href="index.en.html" lang="en" dir="ltr">English</a></nav>
+<h1>راه‌اندازی Brain Bridge، قدم‌به‌قدم</h1>
+<p>از دانلود کلاینت تا پیدا کردن شناسهٔ تونل و تکمیل فرم؛ بدون نوشتن دستور PowerShell.</p>
+<p class="muted">نسخهٔ آزمایشی • بررسی راهنما: ۸ اکتبر ۲۰۲۶ • این صفحه و تصاویر داخل بسته‌اند؛ لینک‌های سرویس به اینترنت و ورود به حساب نیاز دارند.</p>
+<nav><a href="#download">۱) دانلود</a><a href="#tunnel">۲) شناسهٔ تونل</a><a href="#key">۳) کلید Runtime</a><a href="#obsidian">۴) Obsidian</a><a href="#finish">۵) تکمیل فرم</a></nav>
+<section id="download"><h2>۱) فایل کلاینت ویندوز را بگیرید</h2>
+<a class="button" href="https://github.com/openai/tunnel-client/releases/latest">بازکردن دانلود رسمی</a>
+<p>در صفحهٔ انتشار، بخش <bdi>Assets</bdi> را باز کنید؛ ممکن است لازم باشد <bdi>Show all assets</bdi> را بزنید. بستهٔ کامل <code>tunnel-client</code> را انتخاب کنید، نه نسخه‌های <code>runtime</code> یا فایل <bdi>Source code</bdi>.</p>
+<ul><li>ویندوز معمولی Intel/AMD: فایلی با الگوی <code>tunnel-client-v…-windows-amd64.zip</code>.</li><li>ویندوز روی پردازندهٔ ARM: فایلی با الگوی <code>tunnel-client-v…-windows-arm64.zip</code>. نوع سیستم در <bdi>Settings → System → About → System type</bdi> دیده می‌شود.</li></ul>
+<p>نسخه و نام دقیق فایل ممکن است تغییر کند. دانلود رسمی از <a href="https://platform.openai.com/settings/organization/tunnels">صفحهٔ Tunnels</a> نیز ممکن است در حساب شما ارائه شود.</p>
+<p>ZIP را با <bdi>Extract All</bdi> استخراج کنید. در Brain Bridge روی «انتخاب فایل» بزنید و فایل <code>tunnel-client.exe</code> داخل پوشهٔ استخراج‌شده را انتخاب کنید.</p>
+<p class="note">پیش از تأیید کادر بررسی هش، مقدار SHA-256 فایل ZIP را با <code>SHA256SUMS.txt</code> همان انتشار مقایسه کنید. برای این مرحله می‌توانید از ابزار گرافیکی محاسبهٔ SHA-256 که به آن اعتماد دارید استفاده کنید. Brain Bridge فعلاً هش رسمی فایل دانلودی را خودکار بررسی نمی‌کند. اگر بررسی نکرده‌اید، کادر تأیید را علامت نزنید.</p>
+</section>
+<section id="tunnel"><h2>۲) تونل خودتان را پیدا و شناسه‌اش را کپی کنید</h2>
+<a class="button" href="https://platform.openai.com/settings/organization/tunnels">بازکردن صفحهٔ تونل‌ها</a>
+<p>وارد حساب خود شوید و سازمان درست را انتخاب کنید. در فهرست <bdi>Tunnels</bdi>، تونل مربوط به همین اتصال را پیدا کنید. شناسهٔ کامل در ستون <bdi>ID</bdi> را کپی کنید؛ نام تونل یا نشانی مرورگر جایگزین آن نیست.</p>
+<div class="flow"><strong>در مرورگر:</strong> شناسهٔ کامل را انتخاب و <bdi>Ctrl+C</bdi> کنید.<br><strong>در Brain Bridge:</strong> داخل فیلد <bdi>Tunnel ID</bdi> کلیک و <bdi>Ctrl+V</bdi> کنید. اگر رابط سایت دکمهٔ کپی دارد، می‌توانید از آن استفاده کنید.</div>
+<p>اگر تونلی ندارید و اجازهٔ ساخت دارید، <bdi>Create tunnel</bdi> را بزنید، نام و محدودهٔ سازمان/Workspace مناسب را انتخاب کنید و سپس شناسهٔ تونل ساخته‌شده را کپی کنید. اگر صفحه یا مجوز ساخت در دسترس نیست، از مدیر سازمان کمک بگیرید؛ Brain Bridge دسترسی حساب را ایجاد نمی‌کند.</p>
+<figure><img src="images/tunnel-create-modal.png" alt="تصویر رسمی صفحهٔ Tunnels؛ ستون ID در جدول و پنجرهٔ Create tunnel دیده می‌شود"><figcaption>تصویر رسمی OpenAI؛ ستون ID پشت پنجرهٔ ساخت دیده می‌شود. شناسه‌های نمونه پوشانده شده‌اند. برای کپی شناسهٔ تونل موجود، پنجرهٔ ساخت را ببندید. ظاهر حساب شما ممکن است متفاوت باشد.</figcaption></figure>
+<p>شناسه با <code>tunnel_</code> شروع می‌شود؛ ادامهٔ آن را کامل و بدون فاصله وارد کنید. هیچ مقدار نمونه‌ای را به‌جای شناسهٔ حساب خود وارد نکنید.</p>
+</section>
+<section id="key"><h2>۳) کلید Runtime با دسترسی مناسب</h2>
+<a class="button" href="https://platform.openai.com/settings/organization/api-keys">بازکردن صفحهٔ کلید Runtime</a>
+<p>در سازمان مربوط به تونل، کلید Runtime ایجاد کنید. در تنظیم مجوز کلید، <bdi>Restricted</bdi> و دسترسی‌های <bdi>Tunnels: Read + Use</bdi> را انتخاب کنید. کلید را فقط داخل فیلد پوشیدهٔ <bdi>OpenAI Runtime key</bdi> وارد کنید. این فیلد برای Admin key نیست.</p>
+<figure><img src="images/tunnel-permissions-role.png" alt="تصویر رسمی تنظیم مجوزهای نقش سازمانی با گزینه‌های Read، Manage و Use برای Tunnels"><figcaption>این تصویر محل مجوزهای Tunnels در «نقش سازمانی» را نشان می‌دهد، نه صفحهٔ ساخت کلید. تصویر رسمی هر سه گزینه را نمایش می‌دهد؛ برای اجرای Runtime فقط Read و Use لازم است. Manage مربوط به مدیریت تونل‌هاست.</figcaption></figure>
+<p>دسترسی نقش کاربر و محدودیت‌های خود کلید باید اجازهٔ استفاده از تونل را بدهند. اگر گزینه‌ها را نمی‌بینید یا دسترسی رد می‌شود، مدیر سازمان باید نقش شما را بررسی کند. کلید را در عکس، پیام یا گزارش قرار ندهید.</p>
+</section>
+<section id="obsidian"><h2>۴) آدرس و توکن Obsidian</h2>
+<p>در تنظیمات افزونهٔ <bdi>MCP Connector</bdi> داخل Obsidian، آدرس مستقیم سرور محلی و توکن همان Vault را پیدا کنید. توکن معمولاً در بخش <bdi>Access Control</bdi> مدیریت می‌شود؛ جای دقیق گزینه‌ها به نسخهٔ افزونه بستگی دارد.</p>
+<p>URL باید روی همین دستگاه و با مسیر <code>/mcp</code> باشد. مثال صرفاً آموزشی: <code>http://127.0.0.1:27200/mcp</code>؛ پورت واقعی خودتان را وارد کنید. URL واسط Codex یا لینک صفحهٔ وب را وارد نکنید. توکن را بدون پیشوند <code>Bearer</code> در فیلد پوشیده قرار دهید.</p>
+</section>
+<section id="finish"><p>دکمهٔ «−» پنجره را کمینه و «×» تنظیمات را می‌بندد؛ تونل متوقف نمی‌شود. برای توقف تونل، «توقف» را بزنید. هنگام عملیات، تا پایان آن صبر کنید. متن کامل پیام‌های بلند با نگه‌داشتن نشانگر روی وضعیت دیده می‌شود.</p><h2>۵) فرم را تکمیل و اتصال را شروع کنید</h2>
+<p>از بالای پنجره، فارسی یا English را انتخاب کنید. متن‌ها، پیام‌های وضعیت و راهنما متناسب با زبان تغییر می‌کنند؛ مسیر، شناسه و URL همیشه چپ‌به‌راست می‌مانند. تغییر زبان ورودی‌ها را پاک نمی‌کند و عملیاتی را شروع نمی‌کند.</p>
+<figure><img src="images/brainbridge-form.png" alt="رندر فرم واقعی Brain Bridge با دکمه‌های دانلود، مدیریت تونل‌ها، کلید Runtime و راهنمای تصویری؛ فیلدهای کلید خالی‌اند"><figcaption>رندر فرم خود برنامه با فیلدهای خالی؛ هیچ اطلاعات حساب یا کلیدی در این تصویر وجود ندارد.</figcaption></figure>
+<p>پس از واردکردن اطلاعات، «نصب / ذخیره» را بزنید؛ این کار اتصال را هم آزمایش می‌کند. سپس «شروع» و بعد «بررسی وضعیت» را انتخاب کنید. گزینهٔ اجرای خودکار فقط در صورت انتخاب شما فعال می‌شود.</p>
+<p>دکمهٔ «آزمون اتصال» برای آزمون جداست. پس از هر عملیات، فیلدهای محرمانه پاک می‌شوند؛ اگر ابتدا تست کردید، برای نصب کلیدها را دوباره وارد کنید.</p>
+<p class="note">فعال بودن پردازش و آماده بودن اتصال محلی، اثبات فراخوانی موفق ابزار از ChatGPT نیست. آن مرحله را با Vault آزمایشی و دسترسی محدود Read/Search بررسی کنید.</p>
+</section>
+<footer>تصاویر دو صفحهٔ Platform بدون تغییر از مخزن رسمی OpenAI، تحت Apache-2.0، همراه با مجوز و اعلان منبع در همین بسته آمده‌اند. این پروژه وابسته به OpenAI یا Obsidian نیست. <a href="SOURCES.md">منابع تصاویر</a> • <a href="https://github.com/openai/tunnel-client/blob/master/docs/end-user-guide.md">راهنمای رسمی</a></footer>
+</main></body></html>

@@ -1,0 +1,26 @@
+name: Windows prototype checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tests/check_package.py
+      - run: python tests/check_help.py
+      - shell: powershell
+        run: |
+          ./tests/Parse-Scripts.ps1
+          ./tests/Package-Smoke.ps1
+          ./tests/Windows-Integration.ps1
+          powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest -Language en
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

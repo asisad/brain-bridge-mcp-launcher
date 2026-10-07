@@ -2,17 +2,17 @@
 
 [راهنمای فارسی](docs/README.fa.md) · [Architecture](docs/ARCHITECTURE.md) · [Security](SECURITY.md) · [Roadmap](docs/ROADMAP.md)
 
-**Status: v0.1.0 community prototype — Windows only, not an Obsidian Community Plugin.**
+**Status: v0.2.0 community prototype — Windows only, unsigned, not an Obsidian Community Plugin.** See the [Persian PDR and validation boundaries](docs/PDR.fa.md).
 
 Brain Bridge is a small **local setup and launcher** for connecting an existing [Obsidian MCP Connector](https://github.com/istefox/obsidian-mcp-connector) endpoint to ChatGPT via the official [OpenAI tunnel-client](https://github.com/openai/tunnel-client). It does **not** duplicate or modify those projects, and does not include or expose any Obsidian vault content.
 
 ### What it does now
 
-- Interactive Windows PowerShell 5.1 setup — enter your own existing tunnel ID and Obsidian MCP URL.
+- Double-click graphical WPF setup, with a PowerShell 5.1 alternative — enter your existing tunnel ID and direct Obsidian MCP URL.
 - Stores your OpenAI Runtime API key and the Obsidian MCP token using **Windows DPAPI** for the current Windows user.
 - Adds an optional **hidden, per-user startup shortcut** (no administrator permissions needed).
-- Waits for Obsidian's local MCP server to become available and validates its token before starting the tunnel.
-- Validates the Runtime API key with OpenAI at startup and stops rather than retrying indefinitely on unauthorized credentials.
+- Checks a JSON-RPC MCP initialize response, Runtime tunnel lookup, and client `doctor` before starting. Startup retries at most six times, then stops.
+- Separates process status from a per-instance readiness endpoint; neither proves a complete remote ChatGPT round trip.
 - Offers status, stop and uninstall helper scripts. Uses only PowerShell and Windows built-in tools.
 - Does not bundle OpenAI executables or collect telemetry.
 
@@ -25,6 +25,14 @@ Brain Bridge is a small **local setup and launcher** for connecting an existing 
 5. A ChatGPT workspace with access to create a custom MCP plugin.
 
 ### Install
+
+**Graphical prototype:** extract the complete source ZIP outside your vault and double-click `Setup-BrainBridge.vbs`. Select the official client, confirm you checked its published checksum, enter the tunnel ID, direct loopback `/mcp` URL and both secrets. Choose optional login startup, then **Install / Save → Start → Refresh status**. Installation performs connection checks. **Test connection** is also available separately. Secret fields are cleared after an action; re-enter them when saving after a separate test. Use **Stop** or **Uninstall** in the same window. See [the graphical guide](docs/GUI.fa.md).
+
+Windows Script Host and Windows PowerShell 5.1 must be enabled. Organizational script policies may block this unsigned prototype. It does not override those policies or install a signed MSI/EXE. No admin elevation is requested.
+
+Choose **English** or **فارسی** at the top of the blue/teal window. Labels, validation/status messages and uninstall confirmation follow the selection; technical inputs stay LTR and retain their values. The default is Persian; the choice lasts for the current session. The GUI includes official download, Tunnel management and Runtime key links, plus matching offline illustrated guides in both languages. External account links require internet access and your own login. Links never contain entered IDs or secrets.
+
+**PowerShell alternative:**
 
 1. Download this source and extract it **outside your vault**.
 2. Open PowerShell in the project directory, then run:

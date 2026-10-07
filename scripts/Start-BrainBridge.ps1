@@ -1,73 +1,43 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 [CmdletBinding()]
-param([string]$InstallRoot = $PSScriptRoot)
+param([string]$InstallRoot)
 $ErrorActionPreference='Stop'
-$configPath=Join-Path $InstallRoot 'config.json'
-if (-not (Test-Path -LiteralPath $configPath)) { throw 'Install Brain Bridge first.' }
-$config=Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json
-if (-not (Test-Path -LiteralPath $config.tunnel_client_exe -PathType Leaf)) { throw 'tunnel-client executable missing.' }
-$createdNew=$false
-$mutex=New-Object System.Threading.Mutex($true,'Local\BrainBridge-TunnelRunner',[ref]$createdNew)
-if (-not $createdNew) { $mutex.Dispose(); return }
-$logDir=Join-Path $InstallRoot 'logs'
-New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-$log=Join-Path $logDir 'runner.log'
-$pidPath=Join-Path $InstallRoot 'runner.pid'
-Set-Content -LiteralPath $pidPath -Value $PID -Encoding ASCII
-function Write-Log([string]$message) {
-  Add-Content -LiteralPath $log -Encoding UTF8 -Value ((Get-Date).ToString('s')+' '+$message)
-}
-function Get-DpapiSecret([string]$file) {
-  $secure=(Get-Content -LiteralPath (Join-Path $InstallRoot $file) -Raw).Trim() | ConvertTo-SecureString
-  $ptr=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
-  try { return [Runtime.InteropServices.Marshal]::PtrToStringBSTR($ptr) }
-  finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($ptr) }
-}
-function Test-ObsidianMcp([Uri]$uri,[string]$authorization) {
-  $body='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"brain-bridge","version":"0.1.0"}}}'
-  $headers=@{Authorization=$authorization;Accept='application/json, text/event-stream'}
-  try {
-    $resp=Invoke-WebRequest -Uri $uri.AbsoluteUri -Method POST -Headers $headers -ContentType 'application/json' -Body $body -UseBasicParsing -TimeoutSec 4
-    return ($resp.StatusCode -eq 200)
-  } catch [System.Net.WebException] {
-    if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -eq 401) {
-      throw 'Local Obsidian MCP unauthorized: check vault token and URL.'
-    }
-    return $false
-  }
-}
+if (-not $InstallRoot) { $InstallRoot=$PSScriptRoot }
+. (Join-Path $PSScriptRoot 'BrainBridge.Core.ps1')
+$InstallRoot=Assert-BrainBridgeRoot $InstallRoot
+$config=Get-Content -LiteralPath (Join-Path $InstallRoot 'config.json') -Raw | ConvertFrom-Json
+$null=Assert-BrainBridgeConfig $config.tunnel_client_exe $config.tunnel_id $config.mcp_url
+$created=$false
+$sha=[Security.Cryptography.SHA256]::Create()
+try { $instance=[BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($InstallRoot.ToLowerInvariant()))).Replace('-','') }
+finally { $sha.Dispose() }
+$mutex=New-Object Threading.Mutex($true,('Local\BrainBridge-'+$instance),[ref]$created)
+if (-not $created) { $mutex.Dispose(); return }
+$child=$null
+$record=Join-Path $InstallRoot 'runner.json'
+$state=Join-Path $InstallRoot 'state.txt'
+$health=Join-Path $InstallRoot 'health.url'
 try {
-  $env:CONTROL_PLANE_API_KEY=Get-DpapiSecret 'runtime-key.dpapi'
-  $rawToken=Get-DpapiSecret 'obsidian-token.dpapi'
-  if (-not $env:CONTROL_PLANE_API_KEY -or -not $rawToken) { throw 'Stored credential is empty.' }
-  $env:CONTROL_PLANE_TUNNEL_ID=[string]$config.tunnel_id
-  $env:MCP_SERVER_URL=[string]$config.mcp_url
-  $env:OBSIDIAN_MCP_AUTH='Bearer '+$rawToken
-  $env:MCP_EXTRA_HEADERS='Authorization: env:OBSIDIAN_MCP_AUTH'
-  $env:MCP_DISCOVERY_EXTRA_HEADERS='Authorization: env:OBSIDIAN_MCP_AUTH'
-  Remove-Variable rawToken -ErrorAction SilentlyContinue
-  $preflight=& $config.tunnel_client_exe admin tunnels get $config.tunnel_id 2>&1 | Out-String
-  if ($LASTEXITCODE -ne 0) { throw 'OpenAI rejected the Runtime key or Tunnel permission.' }
-  Write-Log 'Runtime key validated by control plane.'
-  $uri=[Uri]$config.mcp_url
-  while($true) {
-    if (-not (Test-ObsidianMcp $uri $env:OBSIDIAN_MCP_AUTH)) {
-      Write-Log 'Waiting for Obsidian MCP endpoint.'
-      Start-Sleep -Seconds 10
-      continue
-    }
-    Write-Log 'Starting tunnel-client.'
-    & $config.tunnel_client_exe run 2>&1 | Out-File -LiteralPath $log -Append -Encoding UTF8
-    $recheck=& $config.tunnel_client_exe admin tunnels get $config.tunnel_id 2>&1 | Out-String
-    if ($LASTEXITCODE -ne 0) { throw 'OpenAI credentials no longer authorized; stopped.' }
-    Start-Sleep -Seconds 10
+  @{pid=$PID;started=(Get-Process -Id $PID).StartTime.ToUniversalTime().Ticks.ToString()} | ConvertTo-Json | Set-Content -LiteralPath $record -Encoding UTF8
+  Set-Content -LiteralPath $state -Value 'Checking connection' -Encoding UTF8
+  $runtime=(Get-Content -LiteralPath (Join-Path $InstallRoot 'runtime-key.dpapi') -Raw).Trim() | ConvertTo-SecureString
+  $token=(Get-Content -LiteralPath (Join-Path $InstallRoot 'obsidian-token.dpapi') -Raw).Trim() | ConvertTo-SecureString
+  $passed=$false
+  for ($attempt=0; $attempt -lt 6; $attempt++) {
+    try { $null=Test-BrainBridgeConnection $config $runtime $token; $passed=$true; break }
+    catch { Set-Content -LiteralPath $state -Value 'Connection check failed; retrying (maximum 6 attempts)' -Encoding UTF8; Start-Sleep -Seconds 10 }
   }
+  if (-not $passed) { throw 'Preflight failed.' }
+  Remove-Item -LiteralPath $health -Force -ErrorAction SilentlyContinue
+  $child=New-BrainBridgeProcess $config $runtime $token ('run --health.listen-addr 127.0.0.1:0 --health.url-file "'+$health+'"')
+  Set-Content -LiteralPath $state -Value 'Runner active; use Refresh status to check readiness' -Encoding UTF8
+  $child.WaitForExit()
+  Set-Content -LiteralPath $state -Value 'Tunnel exited; inspect settings and restart' -Encoding UTF8
 } catch {
-  Write-Log ('STOPPED: '+$_.Exception.Message)
+  Set-Content -LiteralPath $state -Value 'Stopped: connection, configuration or credential check failed' -Encoding UTF8
 } finally {
-  Remove-Item -LiteralPath $pidPath -Force -ErrorAction SilentlyContinue
-  Remove-Item Env:\CONTROL_PLANE_API_KEY -ErrorAction SilentlyContinue
-  Remove-Item Env:\OBSIDIAN_MCP_AUTH -ErrorAction SilentlyContinue
-  if ($createdNew) { $mutex.ReleaseMutex() }
-  $mutex.Dispose()
+  if ($child) { if (-not $child.HasExited) { $child.Kill() }; $child.Dispose() }
+  if ($runtime) { $runtime.Dispose() }; if ($token) { $token.Dispose() }
+  Remove-Item -LiteralPath $record,$health -Force -ErrorAction SilentlyContinue
+  $mutex.ReleaseMutex(); $mutex.Dispose()
 }
