@@ -57,6 +57,9 @@ public class MockTunnel {
   Remove-Item Env:\BB_TEST_DENY
   & (Join-Path $repo 'scripts\Install-BrainBridge.ps1') -TunnelClientPath $client -TunnelId $tunnel -McpUrl $url -RuntimeKey $runtime -ObsidianToken $token -InstallRoot $root -StartupDirectory $startup -EnableAutoStart
   $cipher=Get-Content -LiteralPath (Join-Path $root 'runtime-key.dpapi') -Raw
+  . (Join-Path $root 'BrainBridge.Help.ps1')
+  Assert ((Open-BrainBridgeResource 'guide' -ResolveOnly) -eq (Join-Path $root 'help\index.fa.html')) 'Installed help does not resolve locally.'
+  Reject { Open-BrainBridgeResource 'https://example.com/untrusted' -ResolveOnly }
   Assert (-not $cipher.Contains('synthetic-runtime')) 'Plaintext secret saved.'
   $decoded=$cipher.Trim() | ConvertTo-SecureString
   Assert ((Get-BrainBridgePlain $decoded) -eq 'synthetic-runtime') 'DPAPI roundtrip failed.'

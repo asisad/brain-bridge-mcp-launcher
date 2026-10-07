@@ -4,20 +4,24 @@ param([switch]$SmokeTest,[string]$PreviewPath)
 $ErrorActionPreference='Stop'
 Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
 . (Join-Path $PSScriptRoot 'BrainBridge.Core.ps1')
+. (Join-Path $PSScriptRoot 'BrainBridge.Help.ps1')
 $script:packageRoot=$PSScriptRoot
 $script:installRoot=Join-Path $env:LOCALAPPDATA 'BrainBridge'
 [xml]$xaml=@'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Brain Bridge — Windows prototype" Width="740" Height="740" MinWidth="680" MinHeight="680" WindowStartupLocation="CenterScreen" Background="#F3F5F8" FontFamily="Segoe UI" FontSize="14">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Brain Bridge — Windows prototype" Width="780" Height="850" MinWidth="680" MinHeight="680" WindowStartupLocation="CenterScreen" Background="#F3F5F8" FontFamily="Segoe UI" FontSize="14">
  <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#F3F5F8"><StackPanel Margin="28">
   <TextBlock Text="Brain Bridge" FontSize="30" FontWeight="SemiBold" Foreground="#17374C"/>
   <TextBlock Text="Local MCP tunnel • community prototype 0.2" Margin="0,4,0,18" Foreground="#516575"/>
   <TextBlock Text="Connect your existing Obsidian MCP server. Keep Read/Search access only unless you intentionally need more tools." TextWrapping="Wrap" Margin="0,0,0,16"/>
-  <TextBlock Text="Official tunnel-client.exe"/>
+  <DockPanel Margin="0,0,0,12"><Button x:Name="HelpGuide" Content="راهنمای تصویری فارسی" DockPanel.Dock="Right" Padding="12,7"/><TextBlock Text="لینک‌ها در مرورگر شما باز می‌شوند." VerticalAlignment="Center" FlowDirection="RightToLeft" Margin="0,0,12,0"/></DockPanel>
+  <DockPanel><Button x:Name="DownloadClient" Content="دانلود کلاینت ویندوز ↗" DockPanel.Dock="Right" Padding="9,4"/><TextBlock Text="Official tunnel-client.exe" VerticalAlignment="Center"/></DockPanel>
   <DockPanel Margin="0,5,0,12"><Button x:Name="Browse" Content="Browse…" DockPanel.Dock="Right" Width="90" Margin="8,0,0,0"/><TextBox x:Name="Client" Padding="6"/></DockPanel>
-  <TextBlock Text="Tunnel ID"/><TextBox x:Name="Tunnel" Padding="6" Margin="0,5,0,12"/>
+  <TextBlock Text="فایل ZIP ویندوز را دانلود و استخراج کنید؛ سپس Browse را بزنید." FlowDirection="RightToLeft" TextWrapping="Wrap" FontSize="12" Foreground="#516575" Margin="0,0,0,12"/>
+  <DockPanel><Button x:Name="OpenTunnels" Content="مدیریت تونل‌ها ↗" DockPanel.Dock="Right" Padding="9,4"/><TextBlock Text="Tunnel ID" VerticalAlignment="Center"/></DockPanel><TextBox x:Name="Tunnel" Padding="6" Margin="0,5,0,5"/>
+  <TextBlock Text="شناسهٔ تونل خود را از ستون ID کپی و اینجا با Ctrl+V وارد کنید." FlowDirection="RightToLeft" TextWrapping="Wrap" FontSize="12" Foreground="#516575" Margin="0,0,0,12"/>
   <TextBlock Text="Direct Obsidian MCP URL (loopback /mcp)"/><TextBox x:Name="Url" Text="http://127.0.0.1:27200/mcp" Padding="6" Margin="0,5,0,12"/>
   <Grid Margin="0,0,0,12"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
-   <StackPanel><TextBlock Text="OpenAI Runtime key (Read + Use)"/><PasswordBox x:Name="Runtime" Padding="6" Margin="0,5,0,0"/></StackPanel>
+   <StackPanel><TextBlock Text="OpenAI Runtime key (Read + Use)"/><PasswordBox x:Name="Runtime" Padding="6" Margin="0,5,0,5"/><Button x:Name="OpenKeys" Content="دریافت کلید اجرا ↗" HorizontalAlignment="Left" Padding="9,4"/></StackPanel>
    <StackPanel Grid.Column="2"><TextBlock Text="Obsidian token (without Bearer)"/><PasswordBox x:Name="Token" Padding="6" Margin="0,5,0,0"/></StackPanel>
   </Grid>
   <CheckBox x:Name="Trust" Content="I verified this executable against the official release checksum." Margin="0,0,0,10"/>
@@ -30,7 +34,15 @@ $script:installRoot=Join-Path $env:LOCALAPPDATA 'BrainBridge'
 '@
 $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
-foreach ($name in @('Client','Tunnel','Url','Runtime','Token','Trust','AutoStart','Browse','Test','Install','Start','Refresh','Stop','Remove','Status')) { Set-Variable -Name $name -Value $window.FindName($name) -Scope Script }
+foreach ($name in @('Client','Tunnel','Url','Runtime','Token','Trust','AutoStart','Browse','Test','Install','Start','Refresh','Stop','Remove','Status','DownloadClient','OpenTunnels','OpenKeys','HelpGuide')) { Set-Variable -Name $name -Value $window.FindName($name) -Scope Script }
+function Show-GuiResource([string]$Key) {
+  try { $script:lastHelpDestination=Open-BrainBridgeResource $Key -ResolveOnly:$SmokeTest }
+  catch { $Status.Text='بازکردن راهنما یا مرورگر ممکن نشد. کامل‌بودن بسته و مرورگر پیش‌فرض را بررسی کنید.' }
+}
+$DownloadClient.Add_Click({ Show-GuiResource 'download' })
+$OpenTunnels.Add_Click({ Show-GuiResource 'tunnels' })
+$OpenKeys.Add_Click({ Show-GuiResource 'keys' })
+$HelpGuide.Add_Click({ Show-GuiResource 'guide' })
 $script:worker=$null
 $script:handle=$null
 $script:busy=$false
@@ -116,17 +128,22 @@ $window.Add_Closing({param($sender,$eventArgs)
 })
 if ($SmokeTest) {
   if ($Runtime -isnot [Windows.Controls.PasswordBox] -or $Token -isnot [Windows.Controls.PasswordBox]) { throw 'Secret controls must be PasswordBox.' }
+  foreach ($entry in @(@($DownloadClient,'download'),@($OpenTunnels,'tunnels'),@($OpenKeys,'keys'),@($HelpGuide,'guide'))) {
+    $script:lastHelpDestination=$null
+    $entry[0].RaiseEvent((New-Object Windows.RoutedEventArgs([Windows.Controls.Button]::ClickEvent)))
+    if ($lastHelpDestination -ne (Get-BrainBridgeResource $entry[1])) { throw 'Help button destination mismatch.' }
+  }
   $visual=$window.Content
-  $visual.Measure((New-Object Windows.Size(740,740))); $visual.Arrange((New-Object Windows.Rect(0,0,740,740))); $visual.UpdateLayout()
+  $visual.Measure((New-Object Windows.Size(780,850))); $visual.Arrange((New-Object Windows.Rect(0,0,780,850))); $visual.UpdateLayout()
   if ($PreviewPath) {
-    $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap(740,740,96,96,[Windows.Media.PixelFormats]::Pbgra32)
+    $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap(780,850,96,96,[Windows.Media.PixelFormats]::Pbgra32)
     $bitmap.Render($visual)
     $encoder=New-Object Windows.Media.Imaging.PngBitmapEncoder
     $encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bitmap))
     $stream=[IO.File]::Create($PreviewPath)
     try { $encoder.Save($stream) } finally { $stream.Dispose() }
   }
-  'PASS: WPF form constructed, secret controls verified and layout rendered.'
+  'PASS: WPF form, secret controls, four help click handlers and layout rendered (browser launch suppressed).'
   $window.Close(); return
 }
 $timer.Start()

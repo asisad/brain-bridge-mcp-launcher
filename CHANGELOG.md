@@ -2,6 +2,8 @@
 
 ## 0.2.0 — Graphical Windows prototype
 
+- Contextual download/Tunnels/Runtime links and an offline Persian illustrated guide with attributed official screenshots; four button destinations tested without opening accounts.
+
 - WPF form and double-click VBS entry point; masked secrets and background checks.
 - Shared loopback validation, JSON-RPC checks, Runtime lookup and doctor preflight.
 - DPAPI storage, restricted directory ACL, executable hash pinning and Unicode launcher.

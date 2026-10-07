@@ -41,7 +41,9 @@ $obsidian = $ObsidianToken
 if (-not $runtime) { $runtime = Read-Host 'OpenAI Restricted Runtime key' -AsSecureString }
 if (-not $obsidian) { $obsidian = Read-Host 'Obsidian MCP token (raw, without Bearer)' -AsSecureString }
 if ($runtime.Length -eq 0 -or $obsidian.Length -eq 0) { throw 'Keys may not be empty.' }
-$packageNames = @('BrainBridge.Core.ps1','Start-BrainBridge.ps1','Status-BrainBridge.ps1','Stop-BrainBridge.ps1','Remove-BrainBridge.ps1','BrainBridge.Gui.ps1','Install-BrainBridge.ps1')
+$packageNames = @('BrainBridge.Core.ps1','BrainBridge.Help.ps1','Start-BrainBridge.ps1','Status-BrainBridge.ps1','Stop-BrainBridge.ps1','Remove-BrainBridge.ps1','BrainBridge.Gui.ps1','Install-BrainBridge.ps1')
+$helpSource=Join-Path $PSScriptRoot 'help'
+if (-not (Test-Path -LiteralPath (Join-Path $helpSource 'index.fa.html'))) { throw 'Help package missing.' }
 foreach ($name in $packageNames) {
   if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot $name))) { throw 'Package incomplete.' }
 }
@@ -81,6 +83,11 @@ foreach($name in $packageNames) {
   if ([IO.Path]::GetFullPath($src) -ne (Join-Path $InstallRoot $name)) { Copy-Item -LiteralPath $src -Destination (Join-Path $InstallRoot $name) -Force }
 }
 $scriptPath=(Join-Path $InstallRoot 'Start-BrainBridge.ps1').Replace('"','""')
+$helpTarget=Join-Path $InstallRoot 'help'
+if ([IO.Path]::GetFullPath($helpSource) -ne $helpTarget) {
+  New-Item -ItemType Directory -Path $helpTarget -Force | Out-Null
+  Get-ChildItem -LiteralPath $helpSource | Copy-Item -Destination $helpTarget -Recurse -Force
+}
 $systemPowerShell=(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe').Replace('"','""')
 $vbs='CreateObject("WScript.Shell").Run """'+$systemPowerShell+'"" -NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File ""' + $scriptPath + '""", 0, False'
 $vbsPath=Join-Path $InstallRoot 'Run-Hidden.vbs'

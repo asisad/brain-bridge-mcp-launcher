@@ -9,13 +9,14 @@ required = [
     "scripts/Remove-BrainBridge.ps1",
     "docs/README.fa.md", "docs/ARCHITECTURE.md", "docs/ROADMAP.md",
     "docs/PUBLISH.md",
+    "scripts/BrainBridge.Help.ps1", "scripts/help/index.fa.html",
 ]
 missing = [name for name in required if not (root / name).is_file()]
 assert not missing, missing
 for p in root.rglob("*"):
     if not p.is_file() or ".git" in p.parts:
         continue
-    if p.suffix.lower() not in {".md", ".ps1", ".py", ".json", ".vbs", ".yml", ".txt"}:
+    if p.suffix.lower() not in {".md", ".ps1", ".py", ".json", ".vbs", ".yml", ".txt", ".html"}:
         continue
     data = p.read_text("utf-8-sig")
     assert not re.search(r"tunnel_[a-f0-9]{32}", data), p
