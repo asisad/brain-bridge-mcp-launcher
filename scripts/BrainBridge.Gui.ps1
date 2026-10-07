@@ -8,43 +8,45 @@ Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
 $script:packageRoot=$PSScriptRoot
 $script:installRoot=Join-Path $env:LOCALAPPDATA 'BrainBridge'
 [xml]$xaml=@'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="840" Height="960" MinWidth="700" MinHeight="680" WindowStartupLocation="CenterScreen" Background="#EDF3F7" Foreground="#193548" FontFamily="Segoe UI" FontSize="14">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Width="840" Height="710" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterScreen" Background="#EDF3F7" Foreground="#193548" FontFamily="Segoe UI" FontSize="14">
  <Window.Resources>
-  <Style TargetType="Button"><Setter Property="Padding" Value="12,7"/><Setter Property="Background" Value="#EAF3F7"/><Setter Property="Foreground" Value="#15536A"/><Setter Property="BorderBrush" Value="#CADDE6"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.85"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="#087FA4"/><Setter TargetName="Chrome" Property="BorderThickness" Value="2"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
-  <Style TargetType="TextBox"><Setter Property="Padding" Value="8"/><Setter Property="Background" Value="#FAFCFE"/><Setter Property="BorderBrush" Value="#BCD0DC"/><Setter Property="FlowDirection" Value="LeftToRight"/><Setter Property="TextAlignment" Value="Left"/></Style>
-  <Style TargetType="PasswordBox"><Setter Property="Padding" Value="8"/><Setter Property="Background" Value="#FAFCFE"/><Setter Property="BorderBrush" Value="#BCD0DC"/><Setter Property="FlowDirection" Value="LeftToRight"/></Style>
+  <Style TargetType="Button"><Setter Property="Padding" Value="10,5"/><Setter Property="Background" Value="#EAF3F7"/><Setter Property="Foreground" Value="#15536A"/><Setter Property="BorderBrush" Value="#CADDE6"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Button"><Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="{TemplateBinding Padding}"><ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Chrome" Property="Opacity" Value="0.85"/></Trigger><Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Chrome" Property="BorderBrush" Value="#087FA4"/><Setter TargetName="Chrome" Property="BorderThickness" Value="2"/></Trigger><Trigger Property="IsEnabled" Value="False"><Setter TargetName="Chrome" Property="Opacity" Value="0.45"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style>
+  <Style TargetType="TextBox"><Setter Property="Padding" Value="5"/><Setter Property="Background" Value="#FAFCFE"/><Setter Property="BorderBrush" Value="#BCD0DC"/><Setter Property="FlowDirection" Value="LeftToRight"/><Setter Property="TextAlignment" Value="Left"/></Style>
+  <Style TargetType="PasswordBox"><Setter Property="Padding" Value="5"/><Setter Property="Background" Value="#FAFCFE"/><Setter Property="BorderBrush" Value="#BCD0DC"/><Setter Property="FlowDirection" Value="LeftToRight"/></Style>
  </Window.Resources>
- <ScrollViewer VerticalScrollBarVisibility="Auto" Background="#EDF3F7"><StackPanel x:Name="Page" Margin="24">
-  <Border Background="#153E55" CornerRadius="14" Padding="22" Margin="0,0,0,14"><StackPanel>
-   <DockPanel FlowDirection="LeftToRight"><ComboBox x:Name="LanguageChoice" DockPanel.Dock="Right" Width="150" Height="34" FontSize="14" AutomationProperties.Name="Language / زبان"><ComboBoxItem Content="فارسی" Tag="fa"/><ComboBoxItem Content="English" Tag="en"/></ComboBox><StackPanel Orientation="Horizontal"><Border Background="#2C6578" CornerRadius="8" Padding="9" Margin="0,0,12,0"><Path Stroke="#72DECE" StrokeThickness="2.5" Width="24" Height="24" Stretch="Uniform" Data="M 1,20 L 1,4 M 23,20 L 23,4 M 1,8 C 6,19 18,19 23,8 M 1,20 L 23,20 M 8,14 L 8,20 M 16,14 L 16,20"/></Border><TextBlock Text="Brain Bridge" Foreground="White" FontSize="29" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel></DockPanel>
-   <TextBlock x:Name="Subtitle" Foreground="#D9EEF1" Margin="0,13,0,4" FontSize="16"/>
-   <TextBlock x:Name="Badge" Foreground="#87DBCD" FontSize="11"/>
+ <Grid Background="#EDF3F7"><StackPanel x:Name="Page" Margin="12">
+  <Border Background="#153E55" CornerRadius="12" Padding="8" Margin="0,0,0,6"><StackPanel>
+   <DockPanel FlowDirection="LeftToRight"><StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="10,0,0,0"><Button x:Name="MinimizeWindow" Content="−" Width="35" Height="32" FontSize="20" Margin="0,0,5,0"/><Button x:Name="CloseWindow" Content="×" Width="35" Height="32" FontSize="20" Background="#FBE5E1" Foreground="#8A302C"/></StackPanel><Button x:Name="HelpGuide" DockPanel.Dock="Right" Margin="8,0,0,0" VerticalAlignment="Center"/><ComboBox x:Name="LanguageChoice" DockPanel.Dock="Right" Width="120" Height="32" FontSize="14" AutomationProperties.Name="Language / زبان"><ComboBoxItem Content="فارسی" Tag="fa"/><ComboBoxItem Content="English" Tag="en"/></ComboBox><StackPanel Orientation="Horizontal"><Border Background="#2C6578" CornerRadius="8" Padding="9" Margin="0,0,12,0"><Path Stroke="#72DECE" StrokeThickness="2.5" Width="24" Height="24" Stretch="Uniform" Data="M 1,20 L 1,4 M 23,20 L 23,4 M 1,8 C 6,19 18,19 23,8 M 1,20 L 23,20 M 8,14 L 8,20 M 16,14 L 16,20"/></Border><TextBlock Text="Brain Bridge" Foreground="White" FontSize="23" FontWeight="SemiBold" VerticalAlignment="Center"/></StackPanel></DockPanel>
+   <TextBlock x:Name="Subtitle" Visibility="Collapsed" Foreground="#D9EEF1" Margin="0,13,0,4" FontSize="16"/>
+   <TextBlock x:Name="Badge" Visibility="Collapsed" Foreground="#87DBCD" FontSize="11"/>
   </StackPanel></Border>
-  <TextBlock x:Name="Intro" TextWrapping="Wrap" Margin="4,0,4,12"/>
-  <DockPanel Margin="0,0,0,14"><Button x:Name="HelpGuide" DockPanel.Dock="Right"/><TextBlock x:Name="BrowserNote" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="12" Foreground="#526C7C" Margin="8,0"/></DockPanel>
-  <Border Background="White" BorderBrush="#D6E4EC" BorderThickness="1" CornerRadius="12" Padding="18" Margin="0,0,0,12"><StackPanel>
-   <StackPanel Orientation="Horizontal" Margin="0,0,0,12"><TextBlock Text="⇄" FontSize="21" Foreground="#128D99" Margin="0,0,9,0"/><TextBlock x:Name="ConnectionHeading" FontWeight="SemiBold" FontSize="17" VerticalAlignment="Center"/></StackPanel>
+  <TextBlock x:Name="Intro" Visibility="Collapsed" TextWrapping="Wrap" Margin="4,0,4,12"/>
+
+  <Border Background="White" BorderBrush="#D6E4EC" BorderThickness="1" CornerRadius="12" Padding="8" Margin="0,0,0,6"><StackPanel>
+   <StackPanel Orientation="Horizontal" Margin="0,0,0,3"><TextBlock Text="⇄" FontSize="21" Foreground="#128D99" Margin="0,0,9,0"/><TextBlock x:Name="ConnectionHeading" FontWeight="SemiBold" FontSize="15" VerticalAlignment="Center"/></StackPanel>
    <DockPanel><Button x:Name="DownloadClient" DockPanel.Dock="Right"/><TextBlock x:Name="ClientLabel" VerticalAlignment="Center"/></DockPanel>
-   <DockPanel Margin="0,6,0,5"><Button x:Name="Browse" DockPanel.Dock="Right" MinWidth="105" Margin="8,0,0,0"/><TextBox x:Name="Client"/></DockPanel>
-   <TextBlock x:Name="DownloadHint" TextWrapping="Wrap" FontSize="12" Foreground="#526C7C" Margin="0,0,0,12"/>
-   <DockPanel><Button x:Name="OpenTunnels" DockPanel.Dock="Right"/><TextBlock x:Name="TunnelLabel" VerticalAlignment="Center"/></DockPanel><TextBox x:Name="Tunnel" Margin="0,6,0,5"/>
-   <TextBlock x:Name="TunnelHint" TextWrapping="Wrap" FontSize="12" Foreground="#526C7C" Margin="0,0,0,12"/>
-   <TextBlock x:Name="UrlLabel"/><TextBox x:Name="Url" Text="http://127.0.0.1:27200/mcp" Margin="0,6,0,0"/>
+   <DockPanel Margin="0,4,0,7"><Button x:Name="Browse" DockPanel.Dock="Right" MinWidth="105" Margin="8,0,0,0"/><TextBox x:Name="Client"/></DockPanel>
+   <TextBlock x:Name="DownloadHint" Visibility="Collapsed" TextWrapping="Wrap" FontSize="12" Foreground="#526C7C" Margin="0,0,0,12"/>
+   <DockPanel><Button x:Name="OpenTunnels" DockPanel.Dock="Right"/><TextBlock x:Name="TunnelLabel" VerticalAlignment="Center"/></DockPanel><TextBox x:Name="Tunnel" Margin="0,4,0,7"/>
+   <TextBlock x:Name="TunnelHint" Visibility="Collapsed" TextWrapping="Wrap" FontSize="12" Foreground="#526C7C" Margin="0,0,0,12"/>
+   <TextBlock x:Name="UrlLabel"/><TextBox x:Name="Url" Text="http://127.0.0.1:27200/mcp" Margin="0,4,0,0"/>
   </StackPanel></Border>
-  <Border Background="#F1FAF8" BorderBrush="#C5E4DF" BorderThickness="1" CornerRadius="12" Padding="18" Margin="0,0,0,12"><StackPanel>
-   <StackPanel Orientation="Horizontal" Margin="0,0,0,12"><Path Stroke="#168D81" StrokeThickness="2" Width="18" Height="21" Stretch="Uniform" Data="M 4,9 L 4,5 C 4,-1 16,-1 16,5 L 16,9 M 1,9 L 19,9 L 19,23 L 1,23 Z M 10,14 L 10,18" Margin="0,0,10,0"/><TextBlock x:Name="SecretsHeading" FontWeight="SemiBold" FontSize="17"/></StackPanel>
-   <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel><TextBlock x:Name="RuntimeLabel" TextWrapping="Wrap"/><PasswordBox x:Name="Runtime" Margin="0,6,0,7"/><Button x:Name="OpenKeys" HorizontalAlignment="Left"/></StackPanel><StackPanel Grid.Column="2"><TextBlock x:Name="TokenLabel" TextWrapping="Wrap"/><PasswordBox x:Name="Token" Margin="0,6,0,0"/></StackPanel></Grid>
+  <Border Background="#F1FAF8" BorderBrush="#C5E4DF" BorderThickness="1" CornerRadius="12" Padding="8" Margin="0,0,0,6"><StackPanel>
+   <StackPanel Orientation="Horizontal" Margin="0,0,0,3"><Path Stroke="#168D81" StrokeThickness="2" Width="18" Height="21" Stretch="Uniform" Data="M 4,9 L 4,5 C 4,-1 16,-1 16,5 L 16,9 M 1,9 L 19,9 L 19,23 L 1,23 Z M 10,14 L 10,18" Margin="0,0,10,0"/><TextBlock x:Name="SecretsHeading" FontWeight="SemiBold" FontSize="15"/></StackPanel>
+   <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions><StackPanel><TextBlock x:Name="RuntimeLabel" TextWrapping="Wrap"/><PasswordBox x:Name="Runtime" Margin="0,4,0,5"/><Button x:Name="OpenKeys" HorizontalAlignment="Left"/></StackPanel><StackPanel Grid.Column="2"><TextBlock x:Name="TokenLabel" TextWrapping="Wrap"/><PasswordBox x:Name="Token" Margin="0,4,0,0"/></StackPanel></Grid>
   </StackPanel></Border>
-  <CheckBox x:Name="Trust" Margin="2,0,0,9"/><CheckBox x:Name="AutoStart" Margin="2,0,0,14"/>
+  <CheckBox x:Name="Trust" Margin="2,0,0,5"/><CheckBox x:Name="AutoStart" Margin="2,0,0,8"/>
   <WrapPanel><Button x:Name="Install" Background="#087F8C" Foreground="White" BorderBrush="#087F8C" FontWeight="SemiBold" Margin="0,0,7,7"/><Button x:Name="Test" Margin="0,0,7,7"/><Button x:Name="Start" Margin="0,0,7,7"/><Button x:Name="Refresh" Margin="0,0,7,7"/><Button x:Name="Stop" Margin="0,0,7,7"/><Button x:Name="Remove" Background="#FBF0EE" Foreground="#904A3A" BorderBrush="#EACFC7" Margin="0,0,7,7"/></WrapPanel>
-  <Border Background="#E1EDF5" BorderBrush="#C9DBE8" BorderThickness="1" CornerRadius="10" Padding="13" Margin="0,5,0,10"><StackPanel><TextBlock x:Name="StatusLabel" FontWeight="SemiBold" Foreground="#275777" Margin="0,0,0,5"/><TextBlock x:Name="Status" TextWrapping="Wrap" MinHeight="35"/></StackPanel></Border>
-  <TextBlock x:Name="Privacy" FontSize="12" Foreground="#526C7C" TextWrapping="Wrap"/>
- </StackPanel></ScrollViewer>
+  <Border Background="#E1EDF5" BorderBrush="#C9DBE8" BorderThickness="1" CornerRadius="10" Padding="9" Margin="0,1,0,0"><StackPanel><TextBlock x:Name="StatusLabel" FontWeight="SemiBold" Foreground="#275777" Margin="0,0,0,5"/><TextBlock x:Name="Status" TextWrapping="Wrap" FontSize="12" MaxHeight="66" TextTrimming="CharacterEllipsis"/></StackPanel></Border>
+  <TextBlock x:Name="Privacy" Visibility="Collapsed" FontSize="12" Foreground="#526C7C" TextWrapping="Wrap"/>
+ </StackPanel></Grid>
 </Window>
 '@
 $reader=New-Object Xml.XmlNodeReader $xaml
 $window=[Windows.Markup.XamlReader]::Load($reader)
 foreach ($name in @('Client','Tunnel','Url','Runtime','Token','Trust','AutoStart','Browse','Test','Install','Start','Refresh','Stop','Remove','Status','DownloadClient','OpenTunnels','OpenKeys','HelpGuide')) { Set-Variable -Name $name -Value $window.FindName($name) -Scope Script }
+$window.FindName('MinimizeWindow').Add_Click({ $window.WindowState='Minimized' })
+$window.FindName('CloseWindow').Add_Click({ $window.Close() })
 $script:translations=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'strings.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $script:currentLanguage=$Language
 $script:statusSource='Ready to configure. No credentials are loaded into this form.'
@@ -55,6 +57,7 @@ function Set-GuiStatus([string]$Message) {
     $entry=$script:translations.$script:currentLanguage.messages.PSObject.Properties[$_.Trim()]
     if ($entry) { $entry.Value } else { $script:translations.$script:currentLanguage.messages.'Action failed. No diagnostic containing credentials was saved.' }
   }) -join "`n")
+  $Status.ToolTip=$Status.Text
 }
 function Set-GuiLanguage([string]$Value) {
   $script:currentLanguage=$Value
@@ -65,7 +68,14 @@ function Set-GuiLanguage([string]$Value) {
     if ($control -is [Windows.Controls.TextBlock]) { $control.Text=$property.Value }
     elseif ($control -is [Windows.Controls.ContentControl]) { $control.Content=$property.Value }
   }
+  $window.FindName('CloseWindow').ToolTip=Get-UiText 'CloseTip'
+  $window.FindName('MinimizeWindow').ToolTip=Get-UiText 'MinimizeTip'
+  $Client.ToolTip=Get-UiText 'DownloadHint'
+  $Tunnel.ToolTip=Get-UiText 'TunnelHint'
   Set-GuiStatus $script:statusSource
+  $window.Content.InvalidateMeasure()
+  $window.Content.InvalidateArrange()
+  $window.Content.UpdateLayout()
 }
 $languageChoice=$window.FindName('LanguageChoice')
 $languageChoice.SelectedIndex=if ($Language -eq 'fa') { 0 } else { 1 }
@@ -208,22 +218,43 @@ if ($SmokeTest) {
       $entry[0].RaiseEvent((New-Object Windows.RoutedEventArgs([Windows.Controls.Button]::ClickEvent)))
       if ($lastHelpDestination -ne (Get-BrainBridgeResource $entry[1] -Language $code)) { throw 'Help button destination mismatch.' }
     }
+    # Simulate a 1366x768 desktop at 100% scaling: 710px outer window,
+    # 824x671 client area after allowing for the standard Windows frame.
+    Set-GuiStatus "Installed: yes`nVerified runner active: True`nTunnel readiness: not confirmed`nRunner active; use Refresh status to check readiness`nLocal tunnel readiness endpoint: ready (not a remote ChatGPT test)"
+    $layout=$window.Content
+    $layout.Measure((New-Object Windows.Size(824,671))); $layout.Arrange((New-Object Windows.Rect(0,0,824,671))); $layout.UpdateLayout()
+    $null=$window.Dispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Render)
+    foreach ($name in @('Client','Tunnel','Url','Runtime','Token','Trust','AutoStart','Install','Test','Start','Refresh','Stop','Remove','Status','LanguageChoice','HelpGuide','MinimizeWindow','CloseWindow')) {
+      $control=$window.FindName($name)
+      $bounds=$control.TransformToAncestor($layout).TransformBounds((New-Object Windows.Rect($control.RenderSize)))
+      if ($bounds.Left -lt 0 -or $bounds.Top -lt 0 -or $bounds.Right -gt 824.5 -or $bounds.Bottom -gt 671.5) { throw ('Compact layout overflow: '+$name) }
+    }
+    if ($window.ResizeMode -ne 'CanMinimize' -or $window.WindowStyle -ne 'SingleBorderWindow' -or $window.Height -gt 728) { throw 'Standard window controls or desktop fit missing.' }
+    if ($Status.ToolTip -ne $Status.Text) { throw 'Full status must be available without scrolling.' }
   }
   $Client.Clear(); $Tunnel.Clear(); $Runtime.Clear(); $Token.Clear(); $AutoStart.IsChecked=$false
   $languageChoice.SelectedIndex=if ($Language -eq 'fa') { 0 } else { 1 }
   Set-GuiStatus 'Ready to configure. No credentials are loaded into this form.'
   $visual=$window.Content
-  $visual.Measure((New-Object Windows.Size(840,1050))); $visual.Arrange((New-Object Windows.Rect(0,0,840,1050))); $visual.UpdateLayout()
+  $visual.Measure((New-Object Windows.Size(824,671))); $visual.Arrange((New-Object Windows.Rect(0,0,824,671))); $visual.UpdateLayout()
+  $null=$window.Dispatcher.Invoke([Action]{},[Windows.Threading.DispatcherPriority]::Render)
   if ($PreviewPath) {
-    $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap(840,1050,96,96,[Windows.Media.PixelFormats]::Pbgra32)
+    $bitmap=New-Object Windows.Media.Imaging.RenderTargetBitmap(824,671,96,96,[Windows.Media.PixelFormats]::Pbgra32)
     $bitmap.Render($visual)
     $encoder=New-Object Windows.Media.Imaging.PngBitmapEncoder
     $encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($bitmap))
     $stream=[IO.File]::Create($PreviewPath)
     try { $encoder.Save($stream) } finally { $stream.Dispose() }
   }
-  'PASS: both languages, RTL/LTR, preserved inputs, status/validation/confirmation translations, four help buttons and rendered layout (no browser or account access).'
-  $window.Close(); return
+  $window.FindName('MinimizeWindow').RaiseEvent((New-Object Windows.RoutedEventArgs([Windows.Controls.Button]::ClickEvent)))
+  if ($window.WindowState -ne 'Minimized') { throw 'Minimize button failed.' }
+  $window.WindowState='Normal'
+  $script:closedByButton=$false
+  $window.Add_Closed({ $script:closedByButton=$true })
+  $window.FindName('CloseWindow').RaiseEvent((New-Object Windows.RoutedEventArgs([Windows.Controls.Button]::ClickEvent)))
+  if (-not $script:closedByButton) { throw 'Close button failed.' }
+  'PASS: bilingual compact layout fits 824x671 client area; minimize/close handlers, LTR inputs, translations and help destinations verified.'
+  return
 }
 $timer.Start()
 try { $null=$window.ShowDialog() } finally { $timer.Stop(); $Runtime.Clear(); $Token.Clear() }

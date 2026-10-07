@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — Graphical Windows prototype
+## 0.2.0 â€” Graphical Windows prototype
 
 - Persian/English language selector, localized labels/status/validation/confirmation, and matching offline guides with language-specific form renders.
 - Blue/teal visual refresh with connection/credential cards and simple vector icons; technical inputs remain LTR in both languages.
@@ -14,7 +14,7 @@
 - Synthetic Windows integration tests, WPF construction/render smoke test and Windows CI.
 - Persian GUI guide and PDR; no production certification or live-service E2E claim.
 
-## 0.1.0 — Public starter package
+## 0.1.0 â€” Public starter package
 
 - Initial Windows-only local tunnel setup and launcher.
 - DPAPI storage, hidden Startup shortcut, local MCP authentication check and OpenAI runtime key preflight.

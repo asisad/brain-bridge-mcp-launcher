@@ -34,7 +34,9 @@
       "ConfirmBody": "Stop Brain Bridge and remove local settings, encrypted keys and backups? Your vault and tunnel-client remain.",
       "ConfirmYes": "Uninstall",
       "ConfirmNo": "Cancel",
-      "FileFilter": "Tunnel client|tunnel-client.exe"
+      "FileFilter": "Tunnel client|tunnel-client.exe",
+      "CloseTip": "Close settings (the tunnel keeps running)",
+      "MinimizeTip": "Minimize"
     },
     "messages": {
       "Ready to configure. No credentials are loaded into this form.": "Ready to configure. No credentials are loaded into this form.",
@@ -108,7 +110,9 @@
       "ConfirmBody": "برنامه متوقف و تنظیمات محلی، کلیدهای رمزگذاری‌شده و پشتیبان‌ها حذف شوند؟ خزانه و فایل کلاینت باقی می‌مانند.",
       "ConfirmYes": "حذف شود",
       "ConfirmNo": "انصراف",
-      "FileFilter": "کلاینت تونل|tunnel-client.exe"
+      "FileFilter": "کلاینت تونل|tunnel-client.exe",
+      "CloseTip": "بستن تنظیمات (تونل همچنان اجرا می‌شود)",
+      "MinimizeTip": "کمینه‌کردن پنجره"
     },
     "messages": {
       "Ready to configure. No credentials are loaded into this form.": "آمادهٔ تنظیم است. هیچ کلیدی در فرم بارگذاری نشده است.",
