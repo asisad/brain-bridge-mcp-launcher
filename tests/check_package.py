@@ -9,7 +9,7 @@ required = [
     "scripts/Remove-BrainBridge.ps1",
     "docs/README.fa.md", "docs/ARCHITECTURE.md", "docs/ROADMAP.md",
     "docs/PUBLISH.md",
-    "scripts/BrainBridge.Help.ps1", "scripts/help/index.fa.html",
+    "scripts/BrainBridge.Help.ps1", "scripts/strings.json", "scripts/help/index.fa.html", "scripts/help/index.en.html",
 ]
 missing = [name for name in required if not (root / name).is_file()]
 assert not missing, missing

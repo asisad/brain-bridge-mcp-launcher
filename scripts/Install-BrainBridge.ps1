@@ -41,9 +41,10 @@ $obsidian = $ObsidianToken
 if (-not $runtime) { $runtime = Read-Host 'OpenAI Restricted Runtime key' -AsSecureString }
 if (-not $obsidian) { $obsidian = Read-Host 'Obsidian MCP token (raw, without Bearer)' -AsSecureString }
 if ($runtime.Length -eq 0 -or $obsidian.Length -eq 0) { throw 'Keys may not be empty.' }
-$packageNames = @('BrainBridge.Core.ps1','BrainBridge.Help.ps1','Start-BrainBridge.ps1','Status-BrainBridge.ps1','Stop-BrainBridge.ps1','Remove-BrainBridge.ps1','BrainBridge.Gui.ps1','Install-BrainBridge.ps1')
+$packageNames = @('BrainBridge.Core.ps1','BrainBridge.Help.ps1','strings.json','Start-BrainBridge.ps1','Status-BrainBridge.ps1','Stop-BrainBridge.ps1','Remove-BrainBridge.ps1','BrainBridge.Gui.ps1','Install-BrainBridge.ps1')
 $helpSource=Join-Path $PSScriptRoot 'help'
 if (-not (Test-Path -LiteralPath (Join-Path $helpSource 'index.fa.html'))) { throw 'Help package missing.' }
+if (-not (Test-Path -LiteralPath (Join-Path $helpSource 'index.en.html'))) { throw 'English help package missing.' }
 foreach ($name in $packageNames) {
   if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot $name))) { throw 'Package incomplete.' }
 }

@@ -59,6 +59,8 @@ public class MockTunnel {
   $cipher=Get-Content -LiteralPath (Join-Path $root 'runtime-key.dpapi') -Raw
   . (Join-Path $root 'BrainBridge.Help.ps1')
   Assert ((Open-BrainBridgeResource 'guide' -ResolveOnly) -eq (Join-Path $root 'help\index.fa.html')) 'Installed help does not resolve locally.'
+  Assert ((Open-BrainBridgeResource 'guide' -Language en -ResolveOnly) -eq (Join-Path $root 'help\index.en.html')) 'Installed English help does not resolve locally.'
+  Assert (Test-Path -LiteralPath (Join-Path $root 'strings.json')) 'Installed translations missing.'
   Reject { Open-BrainBridgeResource 'https://example.com/untrusted' -ResolveOnly }
   Assert (-not $cipher.Contains('synthetic-runtime')) 'Plaintext secret saved.'
   $decoded=$cipher.Trim() | ConvertTo-SecureString

@@ -30,7 +30,7 @@ Brain Bridge is a small **local setup and launcher** for connecting an existing 
 
 Windows Script Host and Windows PowerShell 5.1 must be enabled. Organizational script policies may block this unsigned prototype. It does not override those policies or install a signed MSI/EXE. No admin elevation is requested.
 
-The GUI also includes official download, Tunnel management and Runtime key links beside their fields, plus a bundled Persian illustrated guide. The guide works offline; external account links require an internet connection and your own login. Links never contain entered IDs or secrets.
+Choose **English** or **فارسی** at the top of the blue/teal window. Labels, validation/status messages and uninstall confirmation follow the selection; technical inputs stay LTR and retain their values. The default is Persian; the choice lasts for the current session. The GUI includes official download, Tunnel management and Runtime key links, plus matching offline illustrated guides in both languages. External account links require internet access and your own login. Links never contain entered IDs or secrets.
 
 **PowerShell alternative:**
 

@@ -22,3 +22,5 @@ jobs:
           ./tests/Windows-Integration.ps1
           powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest -Language en
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

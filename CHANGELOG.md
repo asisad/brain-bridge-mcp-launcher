@@ -2,6 +2,9 @@
 
 ## 0.2.0 — Graphical Windows prototype
 
+- Persian/English language selector, localized labels/status/validation/confirmation, and matching offline guides with language-specific form renders.
+- Blue/teal visual refresh with connection/credential cards and simple vector icons; technical inputs remain LTR in both languages.
+
 - Contextual download/Tunnels/Runtime links and an offline Persian illustrated guide with attributed official screenshots; four button destinations tested without opening accounts.
 
 - WPF form and double-click VBS entry point; masked secrets and background checks.
