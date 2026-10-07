@@ -11,10 +11,11 @@
 
 ## v0.2 — Setup experience
 
-- [ ] Graphical installer with explicit access-permission review
+- [x] WPF graphical setup with masked inputs and permission guidance (prototype)
 - [ ] Automatic distinction between MCP direct listener and Codex broker URL
 - [ ] Verified installation of official tunnel-client release, with checksum verification
-- [ ] Robust logging, duplicate-process diagnostics and credential rotation controls
+- [x] Fixed status messages, discarded raw output, verified process identity and credential replacement after stopping
+- [ ] Transactional updates and signed MSI/EXE distribution
 
 ## v0.3 — Broader support
 
