@@ -24,7 +24,7 @@ $script:installRoot=Join-Path $env:LOCALAPPDATA 'BrainBridge'
    <StackPanel><TextBlock Text="OpenAI Runtime key (Read + Use)"/><PasswordBox x:Name="Runtime" Padding="6" Margin="0,5,0,5"/><Button x:Name="OpenKeys" Content="دریافت کلید اجرا ↗" HorizontalAlignment="Left" Padding="9,4"/></StackPanel>
    <StackPanel Grid.Column="2"><TextBlock Text="Obsidian token (without Bearer)"/><PasswordBox x:Name="Token" Padding="6" Margin="0,5,0,0"/></StackPanel>
   </Grid>
-  <CheckBox x:Name="Trust" Content="I verified this executable against the official release checksum." Margin="0,0,0,10"/>
+  <CheckBox x:Name="Trust" Content="I verified the downloaded ZIP against the official release checksum." Margin="0,0,0,10"/>
   <CheckBox x:Name="AutoStart" Content="Start hidden when I sign into Windows" Margin="0,0,0,15"/>
   <WrapPanel><Button x:Name="Test" Content="Test connection" Padding="12,7" Margin="0,0,8,8"/><Button x:Name="Install" Content="Install / Save" Padding="12,7" Margin="0,0,8,8" Background="#DCEBF4"/><Button x:Name="Start" Content="Start" Padding="12,7" Margin="0,0,8,8"/><Button x:Name="Refresh" Content="Refresh status" Padding="12,7" Margin="0,0,8,8"/><Button x:Name="Stop" Content="Stop" Padding="12,7" Margin="0,0,8,8"/><Button x:Name="Remove" Content="Uninstall" Padding="12,7" Margin="0,0,8,8"/></WrapPanel>
   <Border Background="White" CornerRadius="6" Padding="12" Margin="0,6,0,12"><TextBlock x:Name="Status" Text="Ready to configure. No credentials are loaded into this form." TextWrapping="Wrap" MinHeight="56"/></Border>
@@ -61,7 +61,7 @@ function Start-GuiWork([string]$Action) {
   if ($Action -in @('test','install')) {
     try {
       $null=Assert-BrainBridgeConfig $config.tunnel_client_exe $config.tunnel_id $config.mcp_url
-      if (-not $Trust.IsChecked) { throw 'Confirm the official executable checksum first.' }
+      if (-not $Trust.IsChecked) { throw 'Confirm the downloaded ZIP checksum against the official release first.' }
       if (-not $Runtime.SecurePassword.Length -or -not $Token.SecurePassword.Length) { throw 'Enter both credentials. Saved secrets are not prefilled.' }
     } catch { $Status.Text=$_.Exception.Message; return }
   }
