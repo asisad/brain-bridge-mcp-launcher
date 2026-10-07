@@ -1,0 +1,20 @@
+# Never publish local user state, logs or credentials
+*.dpapi
+*.log
+*.key
+*.secret
+*.pem
+*.pfx
+.env
+.env.*
+config.json
+runtime-key.*
+obsidian-token.*
+*.lnk
+*.vbs
+.vscode/
+.idea/
+__pycache__/
+*.zip
+*.bak
+.DS_Store
