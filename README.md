@@ -56,6 +56,10 @@ Start-Process wscript.exe -ArgumentList ('"' + $env:LOCALAPPDATA + '\BrainBridge
 
 6. Confirm healthy status. In ChatGPT Plugins, create a **custom MCP server** using the same Tunnel ID. Only select **No authentication** there when the vault token is inserted by the local runner.
 
+### Optional Obsidian shortcut lifecycle example
+
+For advanced manual setups that should start a hidden tunnel when using an Obsidian shortcut and stop it when Obsidian closes, see [the separate shortcut example](examples/obsidian-shortcut-launcher/README.md) ([فارسی](examples/obsidian-shortcut-launcher/README.fa.md)). It provides health-based recovery without a resident login watcher. Direct executable/URI launches can bypass the wrapper. It is not integrated into the graphical installer; see its [validation boundaries](examples/obsidian-shortcut-launcher/VALIDATION.md).
+
 ### Configuration & location
 
 Installed files live in `%LOCALAPPDATA%\BrainBridge`. `config.json` contains no secrets; `.dpapi` files are encrypted for the current Windows user. A Windows Startup shortcut launches the tunnel hidden. The connection requires the PC, the user session, and the Obsidian MCP server to be running.

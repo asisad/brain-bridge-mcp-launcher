@@ -1,0 +1,6 @@
+launcher-config.json
+*.dpapi
+state/
+backups/
+*.lnk
+*.tmp

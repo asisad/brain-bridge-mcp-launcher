@@ -13,6 +13,8 @@ obsidian-token.*
 *.lnk
 *.vbs
 !Setup-BrainBridge.vbs
+!examples/obsidian-shortcut-launcher/Run-Hidden.vbs
+!examples/obsidian-shortcut-launcher/Open-Obsidian.vbs
 .vscode/
 .idea/
 __pycache__/

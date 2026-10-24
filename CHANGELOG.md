@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Add a separate advanced Obsidian shortcut lifecycle example with hidden supervision, local/control-plane health checks, backoff, owned-child teardown and recovery.
+- Include configurable paths, current-user/install-scoped single-instance locking, existing DPAPI credential loading, client hash pinning, redacted diagnostics and bilingual setup documentation.
+- Exercise the example with authenticated loopback and process fixtures, including crash and unresponsive-child recovery; document originating live-service evidence separately.
+
 ## 0.2.0 â€” Graphical Windows prototype
 
 - Persian/English language selector, localized labels/status/validation/confirmation, and matching offline guides with language-specific form renders.

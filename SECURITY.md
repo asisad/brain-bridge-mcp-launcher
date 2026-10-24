@@ -31,6 +31,10 @@ Brain Bridge is a local Windows wrapper around the existing Obsidian MCP Connect
 - Deletion requires a local directory named BrainBridge, an ownership marker and no reparse points. Stop verifies process name, full script argument and creation time before stopping its tree. A same-user attacker can alter code/state; this is not a sandbox.
 - Updates are not transactional. Config and encrypted credentials are backed up, but a disk/write failure may require re-running setup. Stop old versions before upgrading.
 
+## Shortcut example
+
+The optional `examples/obsidian-shortcut-launcher` sample is separate from the GUI installer. It expects an already private current-user installation directory and existing DPAPI files; it does not provision credentials or install ACLs. It accepts direct loopback MCP URLs, pins the selected client hash and discards competing inherited tunnel configuration. Its manual shortcut approach can be bypassed by direct executable/URI starts. Its integration suite uses synthetic fixtures; originating live-service observations are documented separately in the example's `VALIDATION.md`.
+
 ## Reporting
 
 Share sanitized reproduction steps through GitHub issues; **do not** post secrets, raw Vault exports, encrypted credential blobs, or unredacted logs. Use private security reporting when available.
