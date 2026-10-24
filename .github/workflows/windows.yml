@@ -20,6 +20,7 @@ jobs:
           ./tests/Parse-Scripts.ps1
           ./tests/Package-Smoke.ps1
           ./tests/Windows-Integration.ps1
+          ./tests/Shortcut-Launcher.ps1
           powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File scripts/BrainBridge.Gui.ps1 -SmokeTest -Language en

@@ -10,6 +10,16 @@ required = [
     "docs/README.fa.md", "docs/ARCHITECTURE.md", "docs/ROADMAP.md",
     "docs/PUBLISH.md",
     "scripts/BrainBridge.Help.ps1", "scripts/strings.json", "scripts/help/index.fa.html", "scripts/help/index.en.html",
+    "examples/obsidian-shortcut-launcher/README.md",
+    "examples/obsidian-shortcut-launcher/README.fa.md",
+    "examples/obsidian-shortcut-launcher/VALIDATION.md",
+    "examples/obsidian-shortcut-launcher/Launcher-Config.ps1",
+    "examples/obsidian-shortcut-launcher/Start-ObsidianTunnel.ps1",
+    "examples/obsidian-shortcut-launcher/Get-ObsidianTunnelStatus.ps1",
+    "examples/obsidian-shortcut-launcher/Open-Obsidian.vbs",
+    "examples/obsidian-shortcut-launcher/Run-Hidden.vbs",
+    "examples/obsidian-shortcut-launcher/launcher-config.example.json",
+    "tests/Shortcut-Launcher.ps1", "tests/shortcut_mcp.py",
 ]
 missing = [name for name in required if not (root / name).is_file()]
 assert not missing, missing

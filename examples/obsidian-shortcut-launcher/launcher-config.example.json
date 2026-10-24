@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "obsidian_exe": "%LOCALAPPDATA%\\Programs\\Obsidian\\Obsidian.exe",
+  "tunnel_exe": "%LOCALAPPDATA%\\Programs\\tunnel-client\\tunnel-client.exe",
+  "tunnel_sha256": "REPLACE_WITH_SHA256_OF_VERIFIED_OFFICIAL_DOWNLOAD",
+  "tunnel_id": "tunnel_REPLACE_WITH_YOUR_EXISTING_ID",
+  "mcp_url": "http://127.0.0.1:27200/mcp"
+}
