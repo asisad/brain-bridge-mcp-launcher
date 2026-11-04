@@ -22,6 +22,15 @@ account UI, permission model and current API version at deployment time.
 - **S8 — Official MCP Python SDK:** https://github.com/modelcontextprotocol/python-sdk
 - **S9 — Obsidian Help:** https://help.obsidian.md/
 
+- **S10 — Manus API Connectors:** https://open.manus.im/docs/v2/connectors
+  Requires authorizing/installing a connector in the Manus web account before using its account-specific UUID in API tasks.
+- **S11 — Manus API connector.list:** https://open.manus.im/docs/v2/connector.list
+  Lists account-installed connectors and their IDs/types; custom MCP IDs must be discovered at runtime.
+- **S12 — Manus API task.create:** https://open.manus.im/docs/v2/task.create
+  Defines v2 task creation, API key/OAuth authentication, and `message.connectors` selection.
+- **S13 — Manus API Task Lifecycle:** https://open.manus.im/docs/v2/task-lifecycle
+  Defines asynchronous polling, waiting states, and background-job completion checks.
+
 Local incident history, actual user paths, account/tunnel identifiers, private
 receipts and archive listings are intentionally NOT included here. User-specific
 deployment coordinates belong in the private local-owner handoff.
