@@ -1,0 +1,17 @@
+{
+  "schema": "obsi-kar-client-profiles/1",
+  "example_only": true,
+  "adapter_deployed": false,
+  "profiles": [
+    {"producer_id": "chatgpt", "enabled": false, "identity_kind": "platform_client", "allowed_projects": [], "read_scope_ids": [], "credential_reference": "secret-store:chatgpt"},
+    {"producer_id": "manus", "enabled": false, "identity_kind": "platform_client", "allowed_projects": [], "read_scope_ids": [], "credential_reference": "secret-store:manus"},
+    {"producer_id": "claude", "enabled": false, "identity_kind": "platform_client", "allowed_projects": [], "read_scope_ids": [], "credential_reference": "secret-store:claude"},
+    {"producer_id": "codex", "enabled": false, "identity_kind": "platform_client", "allowed_projects": [], "read_scope_ids": [], "credential_reference": "secret-store:codex"},
+    {"producer_id": "runa", "enabled": false, "identity_kind": "named_agent", "source_platform": null, "allowed_projects": [], "read_scope_ids": [], "credential_reference": "secret-store:runa"}
+  ],
+  "target_layout": {
+    "workspace_inbox": "gateway/inbox/{producer_id}/{package_id}",
+    "workspace_receipts": "gateway/receipts/{producer_id}/{package_id}.json",
+    "vault_index": "11-AI/40-Imports/ObSi-KAR/Channels/{producer_id}"
+  }
+}

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+*.key
+*.pem
+*.dpapi
+config.local.json
+runtime/
+raw-archive/
+receipts/
+*.zip
