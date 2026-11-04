@@ -119,10 +119,17 @@ class Tests(unittest.TestCase):
         for name in ('../x','/x','x\\y','C:/x','x:stream','NUL.txt','dir/CON', 'x.', 'a//b'):
             with self.subTest(name=name), self.assertRaises(ValueError): safe_relative(name)
     def test_case_collision(self):
-        self.put('Name'); self.put('name')
+        first = self.put('Name')
+        second = self.put('name', b'different')
+        if first.resolve() == second.resolve() or len(list(self.source.iterdir())) < 2:
+            self.skipTest('Host filesystem is case-insensitive')
         with self.assertRaises(ValueError): self.manifest()
     def test_symlink(self):
-        target=self.put('a'); (self.source/'link').symlink_to(target)
+        target=self.put('a')
+        try:
+            (self.source/'link').symlink_to(target)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f'Symlink creation unavailable: {exc}')
         with self.assertRaises(ValueError): self.manifest()
     def test_hardlink(self):
         target=self.put('a'); os.link(target, self.source/'b')

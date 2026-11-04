@@ -1,13 +1,15 @@
 # ObSi KAR — Manus and multi-platform handoff
 
-**Version:** 0.1.0 · **Status:** integration handoff + tested client, NOT a deployed gateway.
+**Version:** 0.2.0 · **Status:** integration handoff + tested clients, NOT a deployed gateway.
 
 This module adds a concrete delivery contract, a lossless manifest builder and a
 reference API client for **the existing ObSi KAR intake worker**. It does not add
 another Vault writer and does not change the existing Brain Bridge launcher.
 
-Start with [the complete Persian handoff](HANDOFF.fa.md). The receiving Manus task
-must read that document, [the transport contract](docs/TRANSPORT.md), and
+Start with [the complete Persian handoff](HANDOFF.fa.md). For account setup and
+programmatic Manus API v2 tasks, also read [the Manus API guide](docs/MANUS-API.fa.md)
+and inspect the [safe task-creation example](examples/manus_api_task.py). The
+receiving task must also read [the transport contract](docs/TRANSPORT.md) and
 [security/deployment boundaries](docs/SECURITY.md) before taking action.
 
 ## Shipped vs not shipped
@@ -21,6 +23,7 @@ must read that document, [the transport contract](docs/TRANSPORT.md), and
 | Actual HTTP/MCP receiver | **NOT included**; integrate the contract into the existing local worker |
 | Public HTTPS address / credentials | **NOT provisioned** |
 | Live Manus, Claude or ChatGPT connection to this adapter | **NOT tested** |
+| Manus API task example | Included; dynamically discovers account MCP connector ID; not live-tested |
 | Existing OpenAI Secure MCP Tunnel | Left unchanged; external-client compatibility is not assumed |
 | Directory/archive extraction, OCR, deep analysis | Receiver responsibilities; never inferred from upload |
 | Full private Vault export | Never included |
@@ -64,12 +67,14 @@ process.
 ## Structure
 
 - `HANDOFF.fa.md`: one complete task for Manus and the existing local owner.
+- `docs/MANUS-API.fa.md`: account setup, API v2 connector selection, data flow and RUNA safeguards.
 - `docs/TRANSPORT.md`: new REST contract and equivalent MCP tool surface.
 - `docs/SECURITY.md`: privileges, privacy, networking and acceptance tests.
 - `docs/SOURCES.md`: primary documentation verified when drafting.
 - `config/profiles.example.json`: disabled, placeholder-only client profiles.
 - `skill/SKILL.md`: reusable instruction; not installed by publication.
 - `tools/`: manifest and transport client; no Vault writer.
+- `examples/manus_api_task.py`: standard-library Manus task creator using `connector.list`.
 - `tests/`: synthetic fixture tests; not live Windows / Manus evidence.
 - `VALIDATION.json`: actual results and exclusions.
 

@@ -1,34 +1,41 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "checked_date": "2026-11-04",
   "test_environment": {
-    "os": "Linux",
-    "python": "3.13.5"
+    "os": "Windows",
+    "python": "3.14"
   },
   "command": "python -m unittest discover -s tests -v",
-  "tests": 32,
-  "passed": 32,
+  "tests": 39,
+  "passed": 37,
   "failed": 0,
-  "skipped": 0,
-  "method": "synthetic standard-library unittest with in-memory protocol fixture",
+  "skipped": 2,
+  "skip_reasons": [
+    "case-collision fixture skipped because the host filesystem is case-insensitive",
+    "symlink fixture skipped because Windows symlink privilege is unavailable"
+  ],
+  "method": "synthetic standard-library unittest with in-memory ObSi KAR fixture and Manus API request fixture; no live API calls",
   "covered": [
     "mixed binary/text preservation",
     "original ZIP kept opaque",
     "Persian relative paths",
     "count/byte limits",
     "path traversal and Windows reserved names",
-    "symlink/hardlink rejection on test OS",
+    "symlink/hardlink rejection where host OS allows the fixture",
     "deterministic package identity",
     "partial chunk resume",
     "idempotent retry/replay",
     "producer and project scope mismatch",
     "received not mislabeled as processed",
     "HTTP/URL credential rejection",
-    "redirect status is a failure"
+    "redirect status is a failure",
+    "dynamic selection of an account-listed MCP connector",
+    "reject missing or ambiguous custom MCP connector names",
+    "Manus task payload uses the discovered connector ID"
   ],
   "not_tested": [
-    "Windows deployment",
-    "live Manus or other provider account",
+    "live Manus API account or credential",
+    "live Custom MCP installation or connector discovery",
     "server HTTP/MCP implementation",
     "existing worker compatibility",
     "live Obsidian read/write",
